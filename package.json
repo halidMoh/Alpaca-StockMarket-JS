@@ -1,0 +1,23 @@
+{
+  "name": "trading-platform",
+  "version": "1.0.0",
+  "description": "a project from nucamp",
+  "source": "index.html",
+  "main": "clinetside.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+     "start": "parcel index.html",
+    "build": "parcel build"
+  },
+  "keywords": [
+    "trading"
+  ],
+  "author": "Halid Awol",
+  "license": "MIT",
+  "dependencies": {
+    "@alpacahq/alpaca-trade-api": "^3.0.1",
+    "express": "^4.18.2",
+    "parcel": "^2.10.2",
+    "ws": "^8.14.2"
+  }
+}

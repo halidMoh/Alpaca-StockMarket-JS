@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Trading Platform</title>
+        <link rel="stylesheet" href="styles/styles.css" />
+    </head>
+    <body>
+        <h1> Welcome to the Alpaca news</h1>
+<div id="news-container-card">
+
+    <!-- News will be displayed here -->
+</div>
+<script>   
+      const socket = new WebSocket('ws://localhost:3000');
+
+        socket.addEventListener('message', (event) => {
+            const newsData = JSON.parse(event.data);
+            updateNewsUI(newsData);
+        });
+
+        socket.addEventListener('error', (event) => {
+                console.error('WebSocket Error:', event);
+        });
+
+        socket.addEventListener('close', (event) => {
+                console.log('WebSocket Closed:', event);
+        });
+
+        const alpaca = new Alpaca({
+            keyId: 'YOUR_API_KEY_ID',
+            secretKey: 'YOUR_API_SECRET_KEY',
+            paper: true,
+            usePolygon: false
+        });
+
+        function updateNewsUI(newsData) {
+            const newsContainer = document.getElementById('news-container-card');
+
+            // Create HTML elements and update the UI with news data
+            const newsElement = document.createElement('div');
+            newsElement.className = 'card';
+            newsElement.innerHTML = `<h3>${newsData.headline}</h3><p>${newsData.summary} <a href="${newsData.url}" target="_blank">Read More</a></p>`;
+            newsContainer.appendChild(newsElement);
+            let buyOrder = prompt('Do you want to buy this stock? ' + newsData.symbols[0]);
+            let symboltoBuy = newsData.symbols[0];
+
+            if(buyOrder.toLowerCase() === "yes"){
+                let order = {
+                        symbol: symboltoBuy,
+                        qty: 1,
+                        side: 'buy',
+                        type: 'market',
+                        time_in_force: 'day'
+                    }
+                
+                const socket = new WebSocket('ws://localhost:3000');
+                socket.addEventListener('open', (event) => {
+                    socket.send(JSON.stringify(order));
+                });
+            }
+            else{
+                alert("You haven't bought this stock");
+            }
+        }
+</script>
+    </body>
+</html>
+
+          
+</script>
+         
+        
+    </body>
+    
+</html>
